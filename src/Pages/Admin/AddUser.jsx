@@ -42,7 +42,8 @@ export default function AddUser() {
 
  // handle form change
     function handleChange(e){
-        setFormData({...formData, [e.target.name]: e.target.value})
+        const { name, value } = e.target;
+        setFormData({...formData, [name]: value.toLowerCase()});
     }
 
 
@@ -130,9 +131,9 @@ export default function AddUser() {
                     </FieldLabel>
                     <Select onValueChange={(value) => setFormData({...formData, role: Number(value)})}>
                         <SelectTrigger id="role">
-                        <SelectValue placeholder="Student" />
+                        <SelectValue placeholder="Role" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-neutral-900 text-white">
                         <SelectItem value={"1"}>Student</SelectItem>
                         <SelectItem value={"2"}>Instructor</SelectItem>
                         </SelectContent>

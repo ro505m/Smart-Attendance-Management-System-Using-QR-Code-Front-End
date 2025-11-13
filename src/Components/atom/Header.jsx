@@ -12,7 +12,7 @@ export default function Header(){
     return (
         <header className="w-full h-4">
             <nav className="flex justify-between items-center p-1.5">
-                <h1 className="scroll-m-20 text-center font-extrabold tracking-tight text-balance">ATTENDIFY</h1>
+                <h1 className="scroll-m-20 text-center font-extrabold tracking-tight text-balance text-white">ATTENDIFY</h1>
                 <Button variant="destructive" onClick={handleLogout}>Logout</Button>
             </nav>
         </header>

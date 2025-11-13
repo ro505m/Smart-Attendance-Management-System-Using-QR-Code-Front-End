@@ -4,6 +4,7 @@ import { Scanner } from "@yudiel/react-qr-scanner";
 import { Axios } from "@/Api/AxiosCreate";
 import { attendanceMark } from "@/Api/Api";
 import Cookie from 'cookie-universal'
+import Header from "@/Components/atom/Header";
 
 export default function QrReader() {
     const cookie = new Cookie();
@@ -36,6 +37,8 @@ export default function QrReader() {
     };
 
     return (
+    <div>
+    <Header/>
     <div className="@container p-4 w-full h-screen flex justify-center items-center flex-col gap-1.5">
         <h1 className="text-2xl mb-4">Scan  QR Code</h1>
         {!scanned && (
@@ -51,6 +54,7 @@ export default function QrReader() {
             </Button>
         </div>
         )}
+    </div>
     </div>
     );
 }

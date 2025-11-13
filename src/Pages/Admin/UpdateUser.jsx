@@ -30,10 +30,10 @@ export default function UpdateUser() {
     });
     const navigate = useNavigate();
 
-
  // handle form change
     function handleChange(e){
-        setFormData({...formData,[e.target.name]: e.target.value})
+        const { name, value } = e.target;
+        setFormData({...formData, [name]: value.toLowerCase()});
     }
 
     useEffect(()=>{

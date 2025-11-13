@@ -40,7 +40,8 @@ export default function AddSubject() {
 
  // handle form change
     function handleChange(e){
-        setFormData({...formData, [e.target.name]: e.target.value})
+        const { name, value } = e.target;
+        setFormData({...formData, [name]: value.toLowerCase()});
     }
 
     useEffect(() => {
@@ -125,9 +126,9 @@ export default function AddSubject() {
                     </FieldLabel>
                     <Select onValueChange={(value) => setFormData({...formData, instructor: value})}>
                         <SelectTrigger id="instructor">
-                        <SelectValue placeholder="John" />
+                        <SelectValue placeholder="Instructor" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-neutral-900 text-white">
                             {
                                 (instructorData.length !== 0) 
                                 &&
@@ -171,7 +172,7 @@ export default function AddSubject() {
                     </div>
                 </div>
 
-                <FieldDescription className="mt-4 text-sm text-green-400">
+                <FieldDescription className="mt-4 text-sm">
                     {message}
                 </FieldDescription>
 

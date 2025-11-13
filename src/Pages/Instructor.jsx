@@ -135,7 +135,7 @@ export default function Instructor() {
 
     return (
         <div className="w-screen min-h-screen text-white flex p-2 flex-col overflow-x-auto">
-        <div className="w-full h-fit mb-4">
+        <div className="w-full h-fit mb-7">
             <Header/>
         </div>
         <Table>
@@ -217,7 +217,9 @@ export default function Instructor() {
                 <TableHead className="text-white">No.</TableHead>
                 <TableHead className="text-white">Student Name</TableHead>
                 {
-                    reports?.report[0].dates.map((d, i) => (
+                    (reports.length !== 0)
+                    &&
+                    reports?.report[0]?.dates.map((d, i) => (
                         <TableHead key={i} className="text-white">
                             {d.date}
                         </TableHead>

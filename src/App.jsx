@@ -19,6 +19,7 @@ function App() {
       <Route path='*' element={<Error404/>}/>
       <Route path='/403' element={<Error403/>}/>
       <Route path='/login' element={<Login/>}/>
+      <Route path='/' element={<Login/>}/>
       <Route element={<AuthRequird allowedRole={[0]}/>}>
       <Route path='/admin' element={<Admin/>}>
         <Route path='users' element={<Users/>}/>

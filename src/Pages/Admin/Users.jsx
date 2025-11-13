@@ -11,22 +11,31 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyTitle,
+} from "@/components/ui/empty"
 import {  useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookie from 'cookie-universal';
+import { Spinner } from "@/Components/ui/spinner";
 
 
 export default function Users(){
     const [users, setUsers] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const [path, setPath] = useState(localStorage.getItem("path"));
     const navigate = useNavigate();
     const cookie = new Cookie();
-    
+    if (!path) {
+        localStorage.setItem("path", 1)
+    }
     useEffect(() => {
         if (path) {
-            
             if (path == 1) {
                 handleGetStudents();
             } else if(path == 2){
@@ -38,10 +47,16 @@ export default function Users(){
     }, [path])
 
     async function handleGetSubjects() {
+            setLoading(true)
             setUsers([])
             setMessage("")
-            Axios.get(subject)
-            .then(res=>setSubjects(res.data))
+            await Axios.get(subject)
+            .then(res=>{
+                setSubjects(res.data)
+                setLoading(false)
+                if(res.data == '')
+                    setMessage("No subjects available");
+            })
             .catch((err)=>{
                 try {
                     if (err.response) {
@@ -52,44 +67,78 @@ export default function Users(){
                 } catch (error) {
                     console.log(error)
                 }
+                if (message.includes("Network Error")) {
+                    setLoading(false)
+                }
             }
             )
+            .finally(()=>setLoading(false))
     }
 
     async function handleGetStudents() {
+            setUsers([])
+            setLoading(true)
             setMessage("")
-            Axios.get(getAllStudents)
-            .then(res=>setUsers(res.data))
+            await Axios.get(getAllStudents)
+            .then(res=>{
+                setUsers(res.data)
+                setLoading(false)
+                if(res.data == '')
+                    setMessage("No students available");
+            })
             .catch((err)=>{
                 try {
                     if (err.response) {
-                        setMessage(err.response.data.message)
+                        if(err.response.data.message !== "users is not found"){
+                            setMessage(err.response.data.message)
+                        } else{
+                            setMessage("No students available");
+                        }
                     } else{
                         setMessage(err.message)
                     }
                 } catch (error) {
                     console.log(error)
                 }
+                if (message.includes("Network Error")) {
+                    setLoading(false)
+                }
             }
             )
+            .finally(()=>setLoading(false))
     }
 
     async function handleGetInstructors() {
+            setUsers([])
+            setLoading(true)
             setMessage("")
-            Axios.get(getAllInstructors)
-            .then(res=>setUsers(res.data))
+            await Axios.get(getAllInstructors)
+            .then(res=>{
+                setUsers(res.data)
+                setLoading(false)
+                if(res.data == '')
+                    setMessage("No instructors available");
+            })
             .catch((err)=>{
                 try {
                     if (err.response) {
-                        setMessage(err.response.data.message)
+                        if(err.response.data.message !== "users is not found"){
+                            setMessage(err.response.data.message)
+                        } else{
+                            setMessage("No instructors available");
+                        }
                     } else{
                         setMessage(err.message)
                     }
                 } catch (error) {
                     console.log(error)
                 }
+                if (message.includes("Network Error")) {
+                    setLoading(false)
+                }
             }
             )
+            .finally(()=>setLoading(false))
     }
 
     async function handleDelete(userId){
@@ -97,9 +146,9 @@ export default function Users(){
         setMessage("")
         await Axios.delete(`${usersURL}/${userId}`)
         .then(()=>{
-            if (path === 1) {
+            if (path == 1) {
                 handleGetStudents();
-            } else{
+            } else if(path == 2){
                 handleGetInstructors();
             }
             }
@@ -163,6 +212,7 @@ export default function Users(){
         window.location.pathname="/login";
     }
 
+
     return (
             <div className="flex justify-center items-center flex-col w-full">
                 <div className="w-full h-fit mb-4">
@@ -206,8 +256,13 @@ export default function Users(){
                                 <TableHead className="text-white">No.</TableHead>
                                 <TableHead className="text-white">Name</TableHead>
                                 <TableHead className="text-white">Email</TableHead>
+                                {
+                                (path == 2) ? null :
+                                <>
                                 <TableHead className="text-white">Stage</TableHead>
                                 <TableHead className="text-white">Department</TableHead>
+                                </>
+                                }
                                 <TableHead className="text-white">Action</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -218,8 +273,13 @@ export default function Users(){
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.email}</TableCell>
+                                {
+                                (path == 2) ? null :
+                                <>
                                 <TableCell>{item.stage}</TableCell>
                                 <TableCell>{item.department}</TableCell>
+                                </>
+                                }
                                 <TableCell className="flex gap-2">
                                 <Button 
                                 className="bg-emerald-500 hover:bg-emerald-700 font-medium" 
@@ -240,7 +300,7 @@ export default function Users(){
                         <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>navigate("/admin/addUser")}>Add User</Button>
                     </div>
                 </div>
-                : (subjects.length !== 0) &&
+                : (subjects.length !== 0) ?
                 <div className="w-full h-fit flex p-2 flex-col">
                     <Table className="min-w-full">
                         <TableCaption className="text-white">{message}</TableCaption>
@@ -279,6 +339,48 @@ export default function Users(){
                         <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>navigate("/admin/subjects")}>Add Subject</Button>
                         <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>handleAssigned()}>Assigned Subject</Button>
                     </div>
+                </div>
+                : loading ?
+                <div className="w-full h-[90vh] flex justify-center items-center">
+                    <Spinner className="size-8"/>
+                </div>
+                : message.includes("Network Error") ?
+                <div className="w-full h-[90vh] text-white flex justify-center items-center">
+                <Empty>
+                <EmptyHeader>
+                    <EmptyTitle>521 - {message}</EmptyTitle>
+                    <EmptyDescription>
+                        Unable to connect to the server. Please check your internet connection and try again.
+                    </EmptyDescription>
+                </EmptyHeader>
+                </Empty>
+                </div>
+                :
+                <div className="w-full h-[90vh] text-white flex justify-center items-center">
+                <Empty>
+                <EmptyHeader>
+                    <EmptyTitle>204 - {message}</EmptyTitle>
+                    <EmptyDescription>
+                        No content available to display.
+                        <div className="w-4xl flex justify-center items-center gap-1 flex-col m-3">
+                            {
+                            message.includes("No subjects available")?
+                            <Button 
+                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white"
+                            variant="secondary" 
+                            onClick={()=>navigate("/admin/subjects")}
+                            >Add Subject</Button>
+                            :
+                            <Button 
+                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white"
+                            variant="secondary" 
+                            onClick={()=>navigate("/admin/addUser")}
+                            >Add User</Button>
+                            }
+                        </div>
+                    </EmptyDescription>
+                </EmptyHeader>
+                </Empty>
                 </div>
                 }
             </div>
