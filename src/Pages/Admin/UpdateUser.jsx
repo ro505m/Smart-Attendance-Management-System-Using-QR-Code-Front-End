@@ -25,6 +25,7 @@ export default function UpdateUser() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        role: '',
         stage: '',
         department: '',
     });
@@ -58,7 +59,7 @@ export default function UpdateUser() {
     async function Submit(e){
         e.preventDefault();
         setLoading(true)
-        await Axios.put(`${usersURL}/${id}`,formData)
+        await Axios.put(`${usersURL}/${id}`, formData)
         .then(()=>{
             setLoading(false)
             setMessage("the user is updated")
@@ -66,7 +67,6 @@ export default function UpdateUser() {
             
         })
         .catch(err=>{
-            console.log(err)
             try {
                 if (err.response) {
                     setMessage(err.response.data.message)
@@ -131,38 +131,40 @@ return (
                         </InputGroupAddon>
                     </InputGroup>
                     </div>
+                    {
+                        formData?.role === 1 && <>
+                        <div>
+                        <FieldLabel htmlFor="stage">Stage</FieldLabel>
+                        <InputGroup>
+                            <InputGroupInput
+                            id="stage"
+                            name="stage"
+                            type="text"
+                            placeholder="e.g., 3rd"
+                            value={formData.stage}
+                            onChange={handleChange}
+                            required
+                            />
+                        </InputGroup>
+                        </div>
 
-                    <div>
-                    <FieldLabel htmlFor="stage">Stage</FieldLabel>
-                    <InputGroup>
-                        <InputGroupInput
-                        id="stage"
-                        name="stage"
-                        type="text"
-                        placeholder="e.g., 3rd"
-                        value={formData.stage}
-                        onChange={handleChange}
-                        required
-                        />
-                    </InputGroup>
-                    </div>
-
-                    <div>
-                    <FieldLabel htmlFor="department">Department</FieldLabel>
-                    <InputGroup>
-                        <InputGroupInput
-                        id="department"
-                        name="department"
-                        type="text"
-                        placeholder="e.g., Computer Science"
-                        value={formData.department}
-                        onChange={handleChange}
-                        required
-                        />
-                    </InputGroup>
-                    </div>
+                        <div>
+                        <FieldLabel htmlFor="department">Department</FieldLabel>
+                        <InputGroup>
+                            <InputGroupInput
+                            id="department"
+                            name="department"
+                            type="text"
+                            placeholder="e.g., Computer Science"
+                            value={formData.department}
+                            onChange={handleChange}
+                            required
+                            />
+                        </InputGroup>
+                        </div>
+                    </>
+                }
                 </div>
-
                 <FieldDescription className="mt-4 text-sm text-green-400">
                     {message}
                 </FieldDescription>

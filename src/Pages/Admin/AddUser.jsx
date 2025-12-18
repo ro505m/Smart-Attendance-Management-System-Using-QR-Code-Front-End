@@ -58,7 +58,6 @@ export default function AddUser() {
             
         })
         .catch(err=>{
-            console.log(err)
             try {
                 if (err.response) {
                     setMessage(err.response.data.message)
@@ -130,12 +129,12 @@ export default function AddUser() {
                         Role
                     </FieldLabel>
                     <Select onValueChange={(value) => setFormData({...formData, role: Number(value)})}>
-                        <SelectTrigger id="role">
+                        <SelectTrigger id="role" className="cursor-pointer">
                         <SelectValue placeholder="Role" />
                         </SelectTrigger>
                         <SelectContent className="bg-neutral-900 text-white">
-                        <SelectItem value={"1"}>Student</SelectItem>
-                        <SelectItem value={"2"}>Instructor</SelectItem>
+                        <SelectItem value={"1"} className="cursor-pointer">Student</SelectItem>
+                        <SelectItem value={"2"} className="cursor-pointer">Instructor</SelectItem>
                         </SelectContent>
                     </Select>
                     </Field>
@@ -151,7 +150,8 @@ export default function AddUser() {
                         placeholder="e.g., 3rd"
                         value={formData.stage}
                         onChange={handleChange}
-                        required
+                        disabled={formData.role !== 1}
+                        required={formData.role === 1}
                         />
                     </InputGroup>
                     </div>
@@ -166,7 +166,8 @@ export default function AddUser() {
                         placeholder="e.g., Computer Science"
                         value={formData.department}
                         onChange={handleChange}
-                        required
+                        disabled={formData.role !== 1}
+                        required={formData.role === 1}
                         />
                     </InputGroup>
                     </div>

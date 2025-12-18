@@ -220,20 +220,20 @@ export default function Users(){
                     <nav className="flex justify-between items-center p-1.5 gap-5">
                         <div className="flex justify-items-start items-center p-1.5 gap-5">
                         <h1 className="scroll-m-20 text-center font-extrabold tracking-tight text-balance">ATTENDIFY</h1>
-                        <Button variant="link" className="text-white" 
+                        <Button variant="link" className="text-white cursor-pointer" 
                         onClick={()=>{
                             handleGetStudents()
                             localStorage.setItem("path", 1)
                             setPath(localStorage.getItem("path"))
                         }}>Students</Button>
-                        <Button variant="link" className="text-white" 
+                        <Button variant="link" className="text-white cursor-pointer" 
                         onClick={()=>{
                             handleGetInstructors()
                             localStorage.setItem("path", 2)
                             setPath(localStorage.getItem("path"))
                         }}
                         >Instructors</Button>
-                        <Button variant="link" className="text-white" 
+                        <Button variant="link" className="text-white cursor-pointer" 
                         onClick={()=>{
                             handleGetSubjects()
                             localStorage.setItem("path", 3)
@@ -241,7 +241,7 @@ export default function Users(){
                         }}
                         >Subjects</Button>
                         </div>
-                        <Button variant="destructive" onClick={handleLogout}>Logout</Button>
+                        <Button variant="destructive" className="cursor-pointer" onClick={handleLogout}>Logout</Button>
                     </nav>
                 </header>
                 </div>
@@ -282,11 +282,11 @@ export default function Users(){
                                 }
                                 <TableCell className="flex gap-2">
                                 <Button 
-                                className="bg-emerald-500 hover:bg-emerald-700 font-medium" 
+                                className="bg-emerald-500 hover:bg-emerald-700 font-medium cursor-pointer" 
                                 onClick={()=>navigate(`/admin/users/${item._id}`)}
                                 >Update</Button>
                                 <Button 
-                                className="bg-destructive text-white hover:bg-destructive/90 font-medium"
+                                className="bg-destructive text-white hover:bg-destructive/90 font-medium cursor-pointer"
                                 onClick={()=>handleDelete(item._id)}
                                 >Delete</Button>
                                 </TableCell>
@@ -297,7 +297,7 @@ export default function Users(){
                         </TableFooter>
                     </Table>
                     <div className="flex justify-center items-center gap-1 flex-col m-3">
-                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>navigate("/admin/addUser")}>Add User</Button>
+                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white cursor-pointer" variant="secondary" onClick={()=>navigate("/admin/addUser")}>Add User</Button>
                     </div>
                 </div>
                 : (subjects.length !== 0) ?
@@ -325,7 +325,7 @@ export default function Users(){
                                 <TableCell>{item.department}</TableCell>
                                 <TableCell className="flex gap-2">
                                 <Button 
-                                className="bg-destructive text-white hover:bg-destructive/90 font-medium"
+                                className="bg-destructive text-white hover:bg-destructive/90 font-medium cursor-pointer"
                                 onClick={()=>handleDeleteSubject(item._id)}
                                 >Delete</Button>
                                 </TableCell>
@@ -336,8 +336,8 @@ export default function Users(){
                         </TableFooter>
                     </Table>
                     <div className="flex justify-center items-center gap-1 flex-col m-3">
-                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>navigate("/admin/subjects")}>Add Subject</Button>
-                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white" variant="secondary" onClick={()=>handleAssigned()}>Assigned Subject</Button>
+                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white cursor-pointer" variant="secondary" onClick={()=>navigate("/admin/subjects")}>Add Subject</Button>
+                        <Button className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white cursor-pointer" variant="secondary" onClick={()=>handleAssigned()}>Assigned Subject</Button>
                     </div>
                 </div>
                 : loading ?
@@ -366,13 +366,13 @@ export default function Users(){
                             {
                             message.includes("No subjects available")?
                             <Button 
-                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white"
+                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white cursor-pointer"
                             variant="secondary" 
                             onClick={()=>navigate("/admin/subjects")}
                             >Add Subject</Button>
                             :
                             <Button 
-                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white"
+                            className="w-[20%] bg-emerald-500 hover:bg-emerald-700 text-white cursor-pointer"
                             variant="secondary" 
                             onClick={()=>navigate("/admin/addUser")}
                             >Add User</Button>
